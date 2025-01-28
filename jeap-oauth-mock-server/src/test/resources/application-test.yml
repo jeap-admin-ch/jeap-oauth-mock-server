@@ -1,0 +1,10 @@
+jeap:
+  monitor:
+    prometheus:
+      user: "prometheus"
+      password: "{noop}secret"
+
+oauth-mock-data:
+  clients:
+    - client-id: "test-client"
+      client-secret: "{noop}secret"

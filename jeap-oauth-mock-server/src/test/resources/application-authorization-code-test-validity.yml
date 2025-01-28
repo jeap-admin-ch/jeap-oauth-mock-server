@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: test
+
+# Mock server configuration for authorization code flow tests
+
+oauth-mock-data:
+  clients:
+    - client-id: "test-client"
+      registered-redirect-uri: "http://localhost/redirect"
+
+      bproles:
+        "12345": [ "bprole" ]
+      userroles: [ "userrole"]
+      context: "USER"
+      audience: [ "example-resource"]
+      scope: [ "openid"]
+      access-token-validity-seconds: 7200
+
+  users:
+    - id: "user"
+      given-name: "Henriette"
+      family-name: "Muster"
+      locale: "DE"
+      preferred-username: "12345"
+      ext-id: "56789"
+      login-level: "S1+OK"

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link th:href="@{/assets/favicon.ico}" rel="icon" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/styles/bootstrap/bootstrap.css}" rel="stylesheet" />
+
+    <title>OpenID Mock Server Login</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>
+                Login
+                <small class="text-muted">OpenID Connect Mock Server</small>
+            </h3>
+            <form role="form" action="?" method="post" class="mt-4">
+                <div class="form-group row">
+                    <label for="username" class="col-sm-3">Username:</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" id="username" name="username" onchange="location = 'openIdMockServerLogin?user=' + this.value">
+                            <option th:each="user: ${users}" th:value="${user.id}" th:selected="${user.id == defaultUsername}" th:text="${user.id}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="givenname" class="col-sm-3">Given Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="givenname" name="givenname"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="familyname" class="col-sm-3">Family Name:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="familyname" name="familyname"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3">E-Mail:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="email" name="email"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="locale" class="col-sm-3">Locale:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="locale" name="locale"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="preferredusername" class="col-sm-3">PAMS User ID:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="preferredusername" name="preferredusername"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="extid" class="col-sm-3">EXT ID:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="extid" name="extid"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="admindiruid" class="col-sm-3">Admin Dir UID:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="admindiruid" name="admindiruid"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="loginlevel" class="col-sm-3">Login Level:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="loginlevel" name="loginlevel"
+                               placeholder="<default value>"/>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-3">User Roles</div>
+                    <div class="col-sm-9">
+                        <div class="form-check" th:each="userRole, i : ${roles}">
+                            <input class="form-check-input" type="checkbox" th:id="'userrole' + ${i.index}"
+                                   th:name="userroles" th:value="${userRole}"
+                                   th:checked="${#sets.contains(preSelectedUserRoles, userRole)}">
+                            <label class="form-check-label" th:for="'userrole' + ${i.index}" th:text="${userRole}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="locale" class="col-sm-3">Additional User Roles:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="additionaluserroles" name="additionaluserroles"
+                               placeholder="role1 role2 ..."/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-3">Business Partner Roles</div>
+                    <div class="col-sm-9">
+                        <div class="form-check" th:each="bpRole, i : ${bpRoles}">
+                            <input class="form-check-input" type="checkbox" th:id="'bprole' + ${i.index}"
+                                   th:name="bproles" th:value="${bpRole}"
+                                   th:checked="${#sets.contains(preSelectedBpRoles, bpRole)}">
+                            <label class="form-check-label" th:for="'bprole' + ${i.index}" th:text="${bpRole}">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="locale" class="col-sm-3">Additional Business Partner Roles:</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="additionalbproles" name="additionalbproles"
+                               placeholder="bpid1:role1 bpid2:role2 ..."/>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-9">
+                        <input type="hidden" id="password" name="password" value="secret"/>
+                        <button type="submit" class="btn btn-primary" id="submit-button">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

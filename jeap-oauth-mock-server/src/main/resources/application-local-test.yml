@@ -1,0 +1,32 @@
+server:
+  port: 8180
+
+# Mock server configuration for authorization code flow tests
+
+oauth-mock-data:
+  clients:
+    - client-id: "test-client"
+      registered-redirect-uri: "http://redirect"
+
+      bproles:
+        "12345": [ "bprole" ]
+      userroles: [ "userrole" ]
+      context: "USER"
+      audience: [ "example-resource" ]
+      scope: [ "openid" ]
+
+  users:
+    - id: "user"
+      given-name: "Henriette"
+      family-name: "Muster"
+      locale: "DE"
+      preferred-username: "12345"
+      ext-id: "56789"
+      login-level: "S1+OK"
+      additional-claims:
+        # example on how to add any other claim into the token
+        "acr": 'urn:someurl.ch:names:tc:SAML:2.0:ac:classes:AuthVeryStrong'
+
+logging.level:
+  org.springframework.security: debug
+  org.springframework.security.oauth2.server: trace
