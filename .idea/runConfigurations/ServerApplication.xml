@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="local-test" />
+    <module name="jeap-oauth-mock-server" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="ch.admin.bit.jeap.oauth.mock.server.ServerApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
