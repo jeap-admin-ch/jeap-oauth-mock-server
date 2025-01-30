@@ -148,10 +148,12 @@ BSD License 3
 Bouncy Castle Licence
 -------------------------------
 
- * Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs - [org.bouncycastle:bcpkix-jdk15on](https://www.bouncycastle.org/java.html)
- * Bouncy Castle Provider - [org.bouncycastle:bcprov-jdk15on](https://www.bouncycastle.org/java.html)
+ * Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs - [org.bouncycastle:bcpkix-jdk18on](https://www.bouncycastle.org/java.html)
+ * Bouncy Castle PKIX, CMS, EAC, TSP, PKCS, OCSP, CMP, and CRMF APIs - [org.bouncycastle:bcpkix-jdk18on](https://www.bouncycastle.org/java.html)
  * Bouncy Castle Provider - [org.bouncycastle:bcprov-jdk18on](https://www.bouncycastle.org/java.html)
- * Bouncy Castle ASN.1 Extension and Utility APIs - [org.bouncycastle:bcutil-jdk15on](https://www.bouncycastle.org/java.html)
+ * Bouncy Castle Provider - [org.bouncycastle:bcprov-jdk18on](https://www.bouncycastle.org/java.html)
+ * Bouncy Castle ASN.1 Extension and Utility APIs - [org.bouncycastle:bcutil-jdk18on](https://www.bouncycastle.org/java.html)
+ * Bouncy Castle ASN.1 Extension and Utility APIs - [org.bouncycastle:bcutil-jdk18on](https://www.bouncycastle.org/java.html)
 
 Eclipse Distribution License - v 1.0
 -------------------------------
