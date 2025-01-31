@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.34.0] - 2025-01-28
+## [3.0.0] - 2025-01-31
 
 ### Changed
 
 - Prepare repository for Open Source distribution
+- Remove static keystore and generate a key at startup to avoid storing sensitive information in the repository
+  - The properties `mockserver.jwt*` have been removed
+  - If you require the generated key pair in custom code based on the mockserver, you can simply inject the KeyPair as a
+    Spring bean
 
 ## [2.33.0] - 2024-01-15
 
