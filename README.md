@@ -28,15 +28,13 @@ public class MyTokenCustomizer extends AbstractJwtTokenCustomizer {
 }
 ```
 
-## Generating a JWT signing key pair
+## JWT signing key pair
 
-JWTs signed by the server require a public/private key pair. The public key is exposed
-under `<baseurl>/.well-known/jwks.json`
-for resource servers wishing to validate the signature of JWTs issued by the mock server.
+JWTs signed by the server require a public/private key pair. The public key is exposed under the endpoint
+`<baseurl>/.well-known/jwks.json` conforming to RFC 7517 (JSON Web Key).
 
-The key is stored under `src/main/resources/mockserver.jks`, and has been generated using
-
-    keytool -genkeypair -alias mockserver -keyalg RSA -keypass secret -keystore mockserver.jks -storepass secret
+The key is generated at startup and not persisted. Redeployment of the mock server will generate a new key pair, tokens
+generated with the old key will not be valid anymore.
 
 ## Upgrading to a new Spring Security Authorization Server Version
 The jEAP OAuth Mock Server is based on the Spring Security Authorization Server. Unfortunately, some authorization server classes
