@@ -35,8 +35,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,7 +60,6 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.rsa.crypto.KeyStoreKeyFactory;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -72,10 +69,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.math.BigInteger;
-import java.security.KeyPair;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
+import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
@@ -260,9 +254,14 @@ public class SecurityConfig {
      */
     @Bean
     KeyPair keyPair(MockServerConfig mockServerConfig) {
-        Resource resource = new ClassPathResource(mockServerConfig.getJwtKeystoreName());
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(resource, mockServerConfig.getJwtKeystoreSecret().toCharArray());
-        return keyStoreKeyFactory.getKeyPair(mockServerConfig.getJwtKeypairAlias(), mockServerConfig.getJwtKeypairSecret().toCharArray());
+        // Generate new RSA key at startup using JCA, used for signing JWTs
+        try {
+            KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+            keyPairGenerator.initialize(2048, new SecureRandom());
+            return keyPairGenerator.generateKeyPair();
+        } catch (GeneralSecurityException gse) {
+            throw new IllegalStateException("Unable to create RSA key pair. Maybe there is a problem with the cryptography provider?", gse);
+        }
     }
 
     /**
