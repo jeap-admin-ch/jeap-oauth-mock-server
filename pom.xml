@@ -5,10 +5,13 @@
     <url>https://github.com/jeap-admin-ch/jeap-oauth-mock-server/tree/main</url>
     <scm>
         <url>https://github.com/jeap-admin-ch/jeap-oauth-mock-server.git</url>
+        <connection>scm:git:git://github.com/jeap-admin-ch/jeap-oauth-mock-server.git</connection>
+        <developerConnection>scm:git:ssh://github.com:jeap-admin-ch/jeap-oauth-mock-server.git</developerConnection>
     </scm>
     <developers>
         <developer>
             <name>BIT</name>
+            <email>jeap-community@bit.admin.ch</email>
             <organization>Federal Office of Information Technology, Systems and Telecommunication FOITT</organization>
             <organizationUrl>https://www.bit.admin.ch/</organizationUrl>
         </developer>
@@ -33,6 +36,10 @@
     <packaging>pom</packaging>
     <name>jeap-oauth-mock-server-parent</name>
     <description>Parent project of the OAuth / OpenID Connect Mock Server</description>
+
+    <properties>
+        <maven.javadoc.skip>false</maven.javadoc.skip>
+    </properties>
 
     <modules>
         <module>jeap-oauth-mock-server</module>
