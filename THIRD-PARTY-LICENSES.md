@@ -167,6 +167,7 @@ Eclipse Public License v2.0
 -------------------------------
 
  * Jakarta Annotations API - [jakarta.annotation:jakarta.annotation-api](https://projects.eclipse.org/projects/ee4j.ca)
+ * AspectJ Weaver - [org.aspectj:aspectjweaver](https://www.eclipse.org/aspectj/)
  * JUnit Jupiter (Aggregator) - [org.junit.jupiter:junit-jupiter](https://junit.org/junit5/)
  * JUnit Jupiter API - [org.junit.jupiter:junit-jupiter-api](https://junit.org/junit5/)
  * JUnit Jupiter Engine - [org.junit.jupiter:junit-jupiter-engine](https://junit.org/junit5/)
