@@ -91,7 +91,15 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
-        OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+                OAuth2AuthorizationServerConfigurer.authorizationServer();
+        http
+                .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
+                .with(authorizationServerConfigurer, Customizer.withDefaults())
+                .authorizeHttpRequests((authorize) ->
+                        authorize.anyRequest().authenticated()
+                );
+
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.addFilterBefore(
                 new ForceLoginFormFilter(), LogoutFilter.class);
@@ -100,10 +108,8 @@ public class SecurityConfig {
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint
                                 .authenticationProviders(configureAuthenticationValidator())
-                );
-
-        // Enable OpenID Connect 1.0
-        http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
+                )
+                // Enable OpenID Connect 1.0
                 .oidc(oidc ->
                         oidc.userInfoEndpoint(userInfoEndpoint ->
                                 userInfoEndpoint.userInfoMapper(new UserInfoMapper())));
