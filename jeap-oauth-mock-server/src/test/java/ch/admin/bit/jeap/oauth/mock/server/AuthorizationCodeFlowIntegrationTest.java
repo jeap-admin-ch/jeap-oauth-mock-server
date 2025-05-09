@@ -130,6 +130,28 @@ class AuthorizationCodeFlowIntegrationTest extends AuthorizationCodeFlowTestBase
     }
 
     @Test
+    void introspectionEndpoint_shouldReturnFullToken() {
+        String accessToken = retrieveTokenUsingAuthCodeFlow("access_token");
+
+        // TODO
+
+        request().header(HttpHeaders.AUTHORIZATION, TokenType.BEARER.getValue() + " " + accessToken)
+                .get("/oauth2/introspect")
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .log().body(true)
+                .body("name", equalTo("Henriette Muster"))
+                .body("given_name", equalTo("Henriette"))
+                .body("family_name", equalTo("Muster"))
+                .body("locale", equalTo("DE"))
+                .body("preferred_username", equalTo("12345"))
+                .body("ext_id", equalTo("56789"))
+                .body("admin_dir_uid", equalTo("U11111111"))
+                .body("login_level", equalTo("S1+OK"));
+    }
+
+    @Test
     void userInfoEndpoint_shouldForwardToLoginWithoutToken() {
         request().get("/userinfo")
                 .then()

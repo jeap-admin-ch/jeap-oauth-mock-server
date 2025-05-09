@@ -109,6 +109,10 @@ public class SecurityConfig {
                         authorizationEndpoint
                                 .authenticationProviders(configureAuthenticationValidator())
                 )
+                .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint ->
+                        tokenIntrospectionEndpoint
+                                .authenticationProviders(configureAuthenticationValidator())
+                )
                 // Enable OpenID Connect 1.0
                 .oidc(oidc ->
                         oidc.userInfoEndpoint(userInfoEndpoint ->
