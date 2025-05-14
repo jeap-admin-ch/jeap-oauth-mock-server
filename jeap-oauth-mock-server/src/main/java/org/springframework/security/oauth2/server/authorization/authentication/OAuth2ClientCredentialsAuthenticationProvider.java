@@ -61,6 +61,7 @@ import static org.springframework.security.oauth2.server.authorization.authentic
  * @see <a target="_blank" href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.4">Section 4.4 Client Credentials Grant</a>
  * @see <a target="_blank" href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.4.2">Section 4.4.2 Access Token Request</a>
  */
+@SuppressWarnings("java:S2259")
 public final class OAuth2ClientCredentialsAuthenticationProvider implements AuthenticationProvider {
 	private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-5.2";
 	private final Log logger = LogFactory.getLog(getClass());

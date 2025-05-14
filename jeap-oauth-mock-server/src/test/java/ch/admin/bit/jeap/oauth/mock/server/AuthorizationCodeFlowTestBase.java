@@ -43,6 +43,10 @@ class AuthorizationCodeFlowTestBase {
         return retrieveTokenUsingAuthCodeFlow(tokenName, "test-client", Set.of(), Set.of("12345:bprole"));
     }
 
+    protected String retrieveTokenUsingAuthCodeFlow(String tokenName, Set<String> bpRoles) {
+        return retrieveTokenUsingAuthCodeFlow(tokenName, "test-client", Set.of(), bpRoles);
+    }
+
     protected String retrieveTokenUsingAuthCodeFlow(String tokenName, String clientId, Set<String> additionalScopes, Set<String> userbproles) {
         String codeVerifier = createCodeVerifier();
         String codeChallenge = createCodeChallenge(codeVerifier);

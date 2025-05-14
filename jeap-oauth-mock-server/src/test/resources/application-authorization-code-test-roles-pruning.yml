@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: test
+
+oauth-mock-data:
+  clients:
+    - client-id: "introspect-client"
+      client-secret: "{noop}secret"
+
+    - client-id: "test-client"
+      registered-redirect-uri: "http://localhost/redirect"
+      context: "USER"
+      audience: [ "example-resource"]
+      scope: [ "openid"]
+      roles-pruning-enabled: true
+
+  users:
+    - id: "user"
+      given-name: "Henriette"
+      family-name: "Muster"
+      locale: "DE"
+      preferred-username: "12345"
+      ext-id: "56789"
+      login-level: "S1+OK"
+
+  roles-pruning-limit: 40

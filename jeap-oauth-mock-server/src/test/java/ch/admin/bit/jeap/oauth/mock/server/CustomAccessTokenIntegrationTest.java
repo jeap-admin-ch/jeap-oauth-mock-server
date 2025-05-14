@@ -2,7 +2,7 @@ package ch.admin.bit.jeap.oauth.mock.server;
 
 import ch.admin.bit.jeap.oauth.mock.server.OAuth2AccessTokenTestTemplate.TestClientConfig;
 import ch.admin.bit.jeap.oauth.mock.server.TokenCustomizerConfiguration.TestClaimCustomizer;
-import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtAccessTokenCustomizer;
+import ch.admin.bit.jeap.oauth.mock.server.token.Claims;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,6 +39,6 @@ class CustomAccessTokenIntegrationTest {
         // then: expect the access token to contain only the claims set in the customizer in TokenCustomizerConfiguration
         JWTClaimsSet jwtClaimsSet = TestTokenParser.parseJwtClaims(accessToken);
         assertEquals(TestClaimCustomizer.ACCESS_TOKEN_VALUE, jwtClaimsSet.getStringClaim(TestClaimCustomizer.TEST_CLAIM));
-        assertNull(jwtClaimsSet.getStringClaim(PamsJwtAccessTokenCustomizer.Claims.EXT_ID.claim()));
+        assertNull(jwtClaimsSet.getStringClaim(Claims.EXT_ID.claim()));
     }
 }

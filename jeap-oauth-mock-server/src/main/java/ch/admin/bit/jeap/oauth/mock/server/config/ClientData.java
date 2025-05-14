@@ -1,5 +1,6 @@
 package ch.admin.bit.jeap.oauth.mock.server.config;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -8,7 +9,6 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 
-import jakarta.validation.constraints.NotEmpty;
 import java.time.Duration;
 import java.util.*;
 
@@ -21,6 +21,8 @@ public class ClientData {
     private static final String CONTEXT = "context";
     private static final String BPROLES_SCOPE_ENABLED = "bproles-scope-enabled";
     private static final String BPROLES_SCOPE = "bproles:*";
+    private static final String ROLES_PRUNING_ENABLED = "roles-pruning-enabled";
+    private static final String ROLES_PRUNING_SCOPE = "roles-pruning";
 
     private static final Duration DEFAULT_TOKEN_VALIDITY = Duration.ofHours(1);
 
@@ -39,6 +41,7 @@ public class ClientData {
     private Map<String, List<String>> bproles = null;
     private List<String> scope = List.of();
     private boolean bprolesScopeEnabled = false;
+    private boolean rolesPruningEnabled = false;
 
     public RegisteredClient toRegisteredClient() {
         return RegisteredClient.withId(UUID.randomUUID().toString())
@@ -57,6 +60,9 @@ public class ClientData {
                     // Add dynamic scope 'bproles' if enabled (and not yet configured)
                     if (bprolesScopeEnabled && !scope.contains(BPROLES_SCOPE)) {
                         c.add(BPROLES_SCOPE);
+                    }
+                    if (rolesPruningEnabled && !scope.contains(ROLES_PRUNING_SCOPE)) {
+                        c.add(ROLES_PRUNING_SCOPE);
                     }
                 })
                 .clientSettings(createClientSettings())

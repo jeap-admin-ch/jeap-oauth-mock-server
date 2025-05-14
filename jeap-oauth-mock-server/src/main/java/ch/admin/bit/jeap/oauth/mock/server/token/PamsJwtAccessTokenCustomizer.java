@@ -3,6 +3,7 @@ package ch.admin.bit.jeap.oauth.mock.server.token;
 import ch.admin.bit.jeap.oauth.mock.server.config.ClientData;
 import ch.admin.bit.jeap.oauth.mock.server.config.OAuthMockData.UserData;
 import ch.admin.bit.jeap.oauth.mock.server.login.CustomLoginDetails;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -25,41 +26,25 @@ import static org.springframework.util.StringUtils.hasText;
  * {@link OAuth2TokenCustomizer} bean has been provided for the OAuth mock server instance.
  */
 @Slf4j
+@RequiredArgsConstructor
 public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
 
-    public enum Claims {
-        CONTEXT("ctx"),
-        USERROLES("userroles"),
-        BPROLES("bproles"),
-        EXT_ID("ext_id"),
-        ADMIN_DIR_UID("admin_dir_uid"),
-        LOGIN("login_level");
-
-        private final String claim;
-
-        Claims(String claim) {
-            this.claim = claim;
-        }
-
-        public String claim() {
-            return claim;
-        }
-    }
+    private final JeapRolesPruningTokenMapper jeapRolesPruningTokenMapper;
 
     @Override
     protected void customizeAccessToken(JwtEncodingContext context, Map<String, Object> claims) {
         String clientId = getClientIdFromSecurityContext();
-        addPamsClaims(context, clientId, claims, context.getPrincipal());
+        addPamsClaims(context, clientId, claims, context.getPrincipal(), true);
     }
 
     @Override
     protected void customizeIdToken(JwtEncodingContext context, Map<String, Object> claims) {
         String clientId = getClientIdFromSecurityContext();
-        addPamsClaims(context, clientId, claims, context.getPrincipal());
+        addPamsClaims(context, clientId, claims, context.getPrincipal(), false);
         updatePamsClaimsForIdToken(clientId, claims);
     }
 
-    private void addPamsClaims(JwtEncodingContext context, String clientId, Map<String, Object> claims, Authentication userAuthentication) {
+    private void addPamsClaims(JwtEncodingContext context, String clientId, Map<String, Object> claims, Authentication userAuthentication, boolean accessToken) {
         RegisteredClient clientData = requireClient(clientId);
 
         addContextClaim(claims, clientData, context.getAuthorizationGrantType());
@@ -76,10 +61,14 @@ public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
 
         applyBprolesScope(clientData, claims);
 
-        log.info("Issued access token with claims " + claims);
+        if (accessToken && clientData.getScopes().contains("roles-pruning")) {
+            jeapRolesPruningTokenMapper.pruneRolesInClaimsIfNecessary(claims);
+        }
+
+        log.info("Issued access token with claims {}", claims);
     }
 
-    private static void applyBprolesScope(RegisteredClient client, Map<String, Object> claims) {
+    public static void applyBprolesScope(RegisteredClient client, Map<String, Object> claims) {
         // Only apply bproles scope if enabled for the client
         if (ClientData.isBprolesScopeEnabled(client)) {
             Optional<BprolesScope> bprolesScope = getBprolesScope(claims);
@@ -100,8 +89,14 @@ public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
 
     @SuppressWarnings("unchecked")
     private static Optional<BprolesScope> getBprolesScope(Map<String, Object> claims) {
-        Set<String> scopes = (Set<String>) claims.getOrDefault(OAuth2TokenIntrospectionClaimNames.SCOPE, Set.of());
-        return scopes.stream().map(BprolesScope::from).filter(Objects::nonNull).findFirst();
+        if (claims.getOrDefault(OAuth2TokenIntrospectionClaimNames.SCOPE, Set.of()) instanceof Set<?>) {
+            Set<String> scopes = (Set<String>) claims.getOrDefault(OAuth2TokenIntrospectionClaimNames.SCOPE, Set.of());
+            return scopes.stream().map(BprolesScope::from).filter(Objects::nonNull).findFirst();
+        } else if (claims.getOrDefault(OAuth2TokenIntrospectionClaimNames.SCOPE, List.of()) instanceof List<?>) {
+            List<String> scopes = (List<String>) claims.getOrDefault(OAuth2TokenIntrospectionClaimNames.SCOPE, List.of());
+            return scopes.stream().map(BprolesScope::from).filter(Objects::nonNull).findFirst();
+        }
+        return Optional.empty();
     }
 
     @SuppressWarnings("unchecked")

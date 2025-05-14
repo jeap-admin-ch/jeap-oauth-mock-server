@@ -1,6 +1,5 @@
 package ch.admin.bit.jeap.oauth.mock.server.token;
 
-import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtAccessTokenCustomizer.Claims;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;

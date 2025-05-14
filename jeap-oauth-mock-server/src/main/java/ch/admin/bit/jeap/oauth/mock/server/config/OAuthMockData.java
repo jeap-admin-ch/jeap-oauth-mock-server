@@ -39,6 +39,13 @@ public class OAuthMockData {
     @NestedConfigurationProperty
     private List<UserData> users = emptyList();
 
+    /**
+     * Defines the maximum number of characters allowed for the `userroles` and `bproles` claims in a token.
+     * If the combined length exceeds this limit, these claims will be pruned.
+     * Optional. Default: 8000 characters.
+     */
+    private int rolesPruningLimit = 8000;
+
     @Bean
     public Map<String, RegisteredClient> clientsById() {
         return clients.stream()
