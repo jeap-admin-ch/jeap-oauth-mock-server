@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>jeap-oauth-mock-server</artifactId>
-    <name>jeap-oauth-mock-server</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>OAuth / OpenID Connect Server to use as a mock in tests and local development</description>
 
     <properties>

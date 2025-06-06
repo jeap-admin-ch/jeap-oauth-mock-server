@@ -32,9 +32,9 @@
     </parent>
 
     <artifactId>jeap-oauth-mock-server-parent</artifactId>
+    <name>${project.groupId}:${project.artifactId}</name>
     <version>3.7.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>jeap-oauth-mock-server-parent</name>
     <description>Parent project of the OAuth / OpenID Connect Mock Server</description>
 
     <properties>
