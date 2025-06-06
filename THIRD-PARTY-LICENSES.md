@@ -9,11 +9,11 @@ Apache License Version 2.0
 -------------------------------
 
  * jeap-oauth-mock-server - [ch.admin.bit.jeap:jeap-oauth-mock-server](https://github.com/jeap-admin-ch/jeap-oauth-mock-server/tree/main/jeap-oauth-mock-server)
- * jeap-spring-boot-application-starter - [ch.admin.bit.jeap:jeap-spring-boot-application-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-application-starter)
- * jeap-spring-boot-cloud-autoconfig-starter - [ch.admin.bit.jeap:jeap-spring-boot-cloud-autoconfig-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-cloud-autoconfig-starter)
- * jeap-spring-boot-logging-starter - [ch.admin.bit.jeap:jeap-spring-boot-logging-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-logging-starter)
- * jeap-spring-boot-monitoring-starter - [ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-monitoring-starter)
- * jeap-spring-boot-rest-request-tracing - [ch.admin.bit.jeap:jeap-spring-boot-rest-request-tracing](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-rest-request-tracing)
+ * ch.admin.bit.jeap:jeap-spring-boot-application-starter - [ch.admin.bit.jeap:jeap-spring-boot-application-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-application-starter)
+ * ch.admin.bit.jeap:jeap-spring-boot-cloud-autoconfig-starter - [ch.admin.bit.jeap:jeap-spring-boot-cloud-autoconfig-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-cloud-autoconfig-starter)
+ * ch.admin.bit.jeap:jeap-spring-boot-logging-starter - [ch.admin.bit.jeap:jeap-spring-boot-logging-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-logging-starter)
+ * ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter - [ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-monitoring-starter)
+ * ch.admin.bit.jeap:jeap-spring-boot-rest-request-tracing - [ch.admin.bit.jeap:jeap-spring-boot-rest-request-tracing](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-rest-request-tracing)
  * java-util - [com.cedarsoftware:java-util](https://github.com/jdereg/java-util)
  * json-io - [com.cedarsoftware:json-io](https://github.com/jdereg/json-io)
  * ClassMate - [com.fasterxml:classmate](https://github.com/FasterXML/java-classmate)
