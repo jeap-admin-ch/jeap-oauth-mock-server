@@ -9,7 +9,7 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
-- Nothing
+- Nothing (SonarQube Test)
 
 ## [3.9.0] - 2025-06-17
 
