@@ -11,6 +11,12 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - Nothing (Revert Test Config)
 
+## [3.10.0] - 2025-07-04
+
+### Changed
+
+- Update parent from 26.61.0 to 26.67.0
+
 ## [3.9.2] - 2025-06-18
 
 ### Changed
