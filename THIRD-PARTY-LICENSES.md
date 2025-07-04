@@ -43,12 +43,13 @@ Apache License Version 2.0
  * Java CF Env Core Library - [io.pivotal.cfenv:java-cfenv](https://github.com/pivotal-cf/java-cfenv/)
  * Java CF Env Boot Support - [io.pivotal.cfenv:java-cfenv-boot](https://github.com/pivotal-cf/java-cfenv/)
  * Java CF Env JDBC Support Library - [io.pivotal.cfenv:java-cfenv-jdbc](https://github.com/pivotal-cf/java-cfenv/)
- * Prometheus Metrics Config - [io.prometheus:prometheus-metrics-config](http://github.com/prometheus/client_java/prometheus-metrics-config)
- * Prometheus Metrics Core - [io.prometheus:prometheus-metrics-core](http://github.com/prometheus/client_java/prometheus-metrics-core)
- * Prometheus Metrics Exposition Formats - [io.prometheus:prometheus-metrics-exposition-formats](http://github.com/prometheus/client_java/prometheus-metrics-exposition-formats)
- * Prometheus Metrics Exposition Text Formats - [io.prometheus:prometheus-metrics-exposition-textformats](http://github.com/prometheus/client_java/prometheus-metrics-exposition-textformats)
- * Prometheus Metrics Model - [io.prometheus:prometheus-metrics-model](http://github.com/prometheus/client_java/prometheus-metrics-model)
- * Prometheus Metrics Tracer Common - [io.prometheus:prometheus-metrics-tracer-common](http://github.com/prometheus/client_java/prometheus-metrics-tracer/prometheus-metrics-tracer-common)
+ * Prometheus Metrics Config - [io.prometheus:prometheus-metrics-config](http://github.com/prometheus/client_java/client_java/prometheus-metrics-config)
+ * Prometheus Metrics Core - [io.prometheus:prometheus-metrics-core](http://github.com/prometheus/client_java/client_java/prometheus-metrics-core)
+ * Prometheus Metrics Exposition Formats - [io.prometheus:prometheus-metrics-exposition-formats](http://github.com/prometheus/client_java/client_java/prometheus-metrics-exposition-formats)
+ * Prometheus Metrics Exposition Formats no protobuf - [io.prometheus:prometheus-metrics-exposition-formats-no-protobuf](http://github.com/prometheus/client_java/client_java/prometheus-metrics-exposition-formats-no-protobuf)
+ * Prometheus Metrics Exposition Text Formats - [io.prometheus:prometheus-metrics-exposition-textformats](http://github.com/prometheus/client_java/client_java/prometheus-metrics-exposition-textformats)
+ * Prometheus Metrics Model - [io.prometheus:prometheus-metrics-model](http://github.com/prometheus/client_java/client_java/prometheus-metrics-model)
+ * Prometheus Metrics Tracer Common - [io.prometheus:prometheus-metrics-tracer-common](http://github.com/prometheus/client_java/client_java/prometheus-metrics-tracer/prometheus-metrics-tracer-common)
  * json-path - [io.rest-assured:json-path](https://rest-assured.io/)
  * REST Assured - [io.rest-assured:rest-assured](https://rest-assured.io/)
  * rest-assured-common - [io.rest-assured:rest-assured-common](https://rest-assured.io/)
@@ -142,6 +143,7 @@ BSD 2-Clause License
 BSD License 3
 -------------------------------
 
+ * Protocol Buffers [Core] - [com.google.protobuf:protobuf-java](https://developers.google.com/protocol-buffers/protobuf-java/)
  * commons-compiler - [org.codehaus.janino:commons-compiler](http://janino-compiler.github.io/commons-compiler/)
  * janino - [org.codehaus.janino:janino](http://janino-compiler.github.io/janino/)
  * Hamcrest - [org.hamcrest:hamcrest](http://hamcrest.org/JavaHamcrest/)
