@@ -14,11 +14,13 @@ softwareType: library
 description:
   en:
     localisedName: jeap-oauth-mock-server
-    shortDescription: TODO (Max. 150 characters)
+    shortDescription: OpenId Connect / OAuth2 Mock Server to use in automated tests and for local Development
     longDescription: >
-      TODO (Min. 150 characters)
+      The jeap-oauth-mock-server is an OpenId Connect / OAuth2 Mock Server to use in automated tests and for local
+      development environments where no real OAuth2 provider is available. The mock server is under no circumstances  
+      intended to be used in production environments and only provides very limited security features.
     features:
-      - TODO
+      - OpenId Connect / OAuth2 Mock Server
 legal:
   license: Apache-2.0
 maintenance:
