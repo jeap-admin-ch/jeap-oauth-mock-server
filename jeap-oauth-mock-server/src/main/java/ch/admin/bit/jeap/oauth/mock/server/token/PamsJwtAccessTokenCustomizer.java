@@ -35,6 +35,7 @@ public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
     protected void customizeAccessToken(JwtEncodingContext context, Map<String, Object> claims) {
         String clientId = getClientIdFromSecurityContext();
         addPamsClaims(context, clientId, claims, context.getPrincipal(), true);
+        log.info("Issued access token with claims {}", claims);
     }
 
     @Override
@@ -42,6 +43,7 @@ public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
         String clientId = getClientIdFromSecurityContext();
         addPamsClaims(context, clientId, claims, context.getPrincipal(), false);
         updatePamsClaimsForIdToken(clientId, claims);
+        log.info("Issued id token with claims {}", claims);
     }
 
     private void addPamsClaims(JwtEncodingContext context, String clientId, Map<String, Object> claims, Authentication userAuthentication, boolean accessToken) {
@@ -64,8 +66,6 @@ public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
         if (accessToken && clientData.getScopes().contains("roles-pruning")) {
             jeapRolesPruningTokenMapper.pruneRolesInClaimsIfNecessary(claims);
         }
-
-        log.info("Issued access token with claims {}", claims);
     }
 
     public static void applyBprolesScope(RegisteredClient client, Map<String, Object> claims) {

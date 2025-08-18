@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.server.authorization.token.JwtEncodin
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
 import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("SpringJavaAutowiredMembersInspection")
 @Slf4j
@@ -40,6 +41,12 @@ public abstract class AbstractJwtTokenCustomizer implements OAuth2TokenCustomize
                 customizeAccessToken(context, claims);
             }
             if (isIdToken(context)) {
+                // Scopes are available from the authorization context
+                Set<String> scopes = context.getAuthorizedScopes();
+                // add scopes into ID token claims as required for bpscoped clients
+                if (scopes != null && !scopes.isEmpty()) {
+                    claims.put("scope", scopes);
+                }
                 customizeIdToken(context, claims);
             }
         });
@@ -86,8 +93,8 @@ public abstract class AbstractJwtTokenCustomizer implements OAuth2TokenCustomize
      */
     protected static String getClientIdFromSecurityContext() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User) {
-            return ((User) principal).getUsername();
+        if (principal instanceof User user) {
+            return user.getUsername();
         }
         return principal.toString();
     }
