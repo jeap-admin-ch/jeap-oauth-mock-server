@@ -27,7 +27,7 @@ import static org.springframework.util.StringUtils.hasText;
  */
 @Slf4j
 @RequiredArgsConstructor
-public class PamsJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
+public class PamsJwtTokenCustomizer extends AbstractJwtTokenCustomizer {
 
     private final JeapRolesPruningTokenMapper jeapRolesPruningTokenMapper;
 

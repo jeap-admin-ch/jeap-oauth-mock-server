@@ -4,7 +4,7 @@ import ch.admin.bit.jeap.oauth.mock.server.config.ClientData;
 import ch.admin.bit.jeap.oauth.mock.server.config.OAuthMockData;
 import ch.admin.bit.jeap.oauth.mock.server.login.CustomLoginDetails;
 import ch.admin.bit.jeap.oauth.mock.server.token.Claims;
-import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtAccessTokenCustomizer;
+import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtTokenCustomizer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -80,7 +80,7 @@ public class CustomTokenIntrospectionAuthenticationProvider implements Authentic
 
                 if (ClientData.getBusinessPartnerRolesForClient(client) != null) {
                     claims.put(Claims.BPROLES.claim(), ClientData.getBusinessPartnerRolesForClient(client));
-                    PamsJwtAccessTokenCustomizer.applyBprolesScope(client, claims);
+                    PamsJwtTokenCustomizer.applyBprolesScope(client, claims);
                 }
             }
         }

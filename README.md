@@ -4,7 +4,7 @@ OpenId Connect / OAuth2 Mock Server to use in automated tests and for local Deve
 
 You may also provide a custom token customizer simply by providing a bean which
 implements `OAuth2TokenCustomizer<JwtEncodingContext>`.
-This is best done by extending from `AbstractJwtTokenCustomizer`, see `PamsJwtAccessTokenCustomizer` for an example.
+This is best done by extending from `AbstractJwtTokenCustomizer`, see `PamsJwtTokenCustomizer` for an example.
 
 ```
 @Component

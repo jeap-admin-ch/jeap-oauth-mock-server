@@ -8,7 +8,7 @@ import ch.admin.bit.jeap.oauth.mock.server.login.CustomLoginController;
 import ch.admin.bit.jeap.oauth.mock.server.login.CustomLoginDetails;
 import ch.admin.bit.jeap.oauth.mock.server.login.ForceLoginFormFilter;
 import ch.admin.bit.jeap.oauth.mock.server.token.JeapRolesPruningTokenMapper;
-import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtAccessTokenCustomizer;
+import ch.admin.bit.jeap.oauth.mock.server.token.PamsJwtTokenCustomizer;
 import ch.admin.bit.jeap.oauth.mock.server.token.UserInfoMapper;
 import com.nimbusds.jose.Algorithm;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -47,9 +47,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.*;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtIssuerValidator;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationContext;
@@ -294,7 +292,7 @@ public class SecurityConfig {
             BeanDefinitionRegistry registry = (BeanDefinitionRegistry) factory;
             if (!isBeanCustomizerRegistered(factory)) {
                 registry.registerBeanDefinition("tokenCustomizer",
-                        BeanDefinitionBuilder.genericBeanDefinition(PamsJwtAccessTokenCustomizer.class).getBeanDefinition()
+                        BeanDefinitionBuilder.genericBeanDefinition(PamsJwtTokenCustomizer.class).getBeanDefinition()
                 );
             }
         };
