@@ -43,7 +43,9 @@ public abstract class AbstractJwtTokenCustomizer implements OAuth2TokenCustomize
             if (isIdToken(context)) {
                 // Scopes are available from the authorization context
                 Set<String> scopes = context.getAuthorizedScopes();
-                // add scopes into ID token claims as required for bpscoped clients
+                // Temporarily add scope claim to ID token for token customizers
+                // scope claim is required for bpscoped clients
+                // scope claim is removed from token before publishing
                 if (scopes != null && !scopes.isEmpty()) {
                     claims.put("scope", scopes);
                 }
