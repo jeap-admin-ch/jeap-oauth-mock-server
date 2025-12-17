@@ -136,8 +136,6 @@ BSD 2-Clause License
 BSD License 3
 -------------------------------
 
- * commons-compiler - [org.codehaus.janino:commons-compiler](http://janino-compiler.github.io/commons-compiler/)
- * janino - [org.codehaus.janino:janino](http://janino-compiler.github.io/janino/)
  * Hamcrest - [org.hamcrest:hamcrest](http://hamcrest.org/JavaHamcrest/)
  * asm - [org.ow2.asm:asm](http://asm.ow2.io/)
 
