@@ -79,7 +79,7 @@ Apache License Version 2.0
  * Awaitility - [org.awaitility:awaitility](http://awaitility.org)
  * TagSoup - [org.ccil.cowan.tagsoup:tagsoup](http://home.ccil.org/~cowan/XML/tagsoup/)
  * Hibernate Validator Engine - [org.hibernate.validator:hibernate-validator](https://hibernate.org/validator)
- * JBoss Logging 3 - [org.jboss.logging:jboss-logging](http://www.jboss.org)
+ * JBoss Logging 3 - [org.jboss.logging:jboss-logging](https://www.jboss.org)
  * Objenesis - [org.objenesis:objenesis](http://objenesis.org/objenesis)
  * org.opentest4j:opentest4j - [org.opentest4j:opentest4j](https://github.com/ota4j-team/opentest4j)
  * JSONassert - [org.skyscreamer:jsonassert](https://github.com/skyscreamer/JSONassert)
@@ -158,6 +158,8 @@ Eclipse Distribution License - v 1.0
 Eclipse Public License v2.0
 -------------------------------
 
+ * Logback Classic Module - [ch.qos.logback:logback-classic](http://logback.qos.ch/logback-classic)
+ * Logback Core Module - [ch.qos.logback:logback-core](http://logback.qos.ch/logback-core)
  * Jakarta Annotations API - [jakarta.annotation:jakarta.annotation-api](https://projects.eclipse.org/projects/ee4j.ca)
  * AspectJ Weaver - [org.aspectj:aspectjweaver](https://www.eclipse.org/aspectj/)
  * JUnit Jupiter (Aggregator) - [org.junit.jupiter:junit-jupiter](https://junit.org/junit5/)
@@ -166,12 +168,6 @@ Eclipse Public License v2.0
  * JUnit Jupiter Params - [org.junit.jupiter:junit-jupiter-params](https://junit.org/junit5/)
  * JUnit Platform Commons - [org.junit.platform:junit-platform-commons](https://junit.org/junit5/)
  * JUnit Platform Engine API - [org.junit.platform:junit-platform-engine](https://junit.org/junit5/)
-
-Eclipse Public License, Version 1.0
--------------------------------
-
- * Logback Classic Module - [ch.qos.logback:logback-classic](http://logback.qos.ch/logback-classic)
- * Logback Core Module - [ch.qos.logback:logback-core](http://logback.qos.ch/logback-core)
 
 GNU General Public License, version 2 (GPL2), with the classpath exception
 -------------------------------
