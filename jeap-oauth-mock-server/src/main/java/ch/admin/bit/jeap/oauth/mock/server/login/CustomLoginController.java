@@ -2,9 +2,9 @@ package ch.admin.bit.jeap.oauth.mock.server.login;
 
 import ch.admin.bit.jeap.oauth.mock.server.config.ClientData;
 import ch.admin.bit.jeap.oauth.mock.server.config.OAuthMockData.UserData;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -23,13 +21,14 @@ public class CustomLoginController {
 
     public static final String LOGIN_FORM_PATH = "/openIdMockServerLogin"; //NOSONAR Deliberately kept as a fixed constant
 
-    private final RequestCache requestCache = new HttpSessionRequestCache();
+    private final RequestCache requestCache;
     private final Map<String, RegisteredClient> clientsById;
     private final List<UserData> users;
 
-    public CustomLoginController(Map<String, RegisteredClient> clientsById, List<UserData> users) {
+    public CustomLoginController(Map<String, RegisteredClient> clientsById, List<UserData> users, RequestCache requestCache) {
         this.clientsById = clientsById;
         this.users = users;
+        this.requestCache = requestCache;
     }
 
     @GetMapping(LOGIN_FORM_PATH)
@@ -66,7 +65,7 @@ public class CustomLoginController {
         return Stream.concat(clientRoles.stream(), users.stream().flatMap(user -> user.getUserroles().stream()))
                 .distinct()
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /*

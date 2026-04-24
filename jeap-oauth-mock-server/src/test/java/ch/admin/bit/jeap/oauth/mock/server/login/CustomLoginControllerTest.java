@@ -2,16 +2,16 @@ package ch.admin.bit.jeap.oauth.mock.server.login;
 
 import ch.admin.bit.jeap.oauth.mock.server.config.ClientData;
 import ch.admin.bit.jeap.oauth.mock.server.config.OAuthMockData;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.groovy.util.Maps;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toMap;
@@ -34,8 +34,8 @@ class CustomLoginControllerTest {
     private static final String CLIENT_BP_ROLE_2 = "client-bp-role-2";
     private static final String BP_CLIENT = "bp-client";
 
-    private final static String BP_1 = "10000000";
-    private final static String BP_2 = "10000001";
+    private static final String BP_1 = "10000000";
+    private static final String BP_2 = "10000001";
 
     private final ClientData clientData = new ClientData();
 
@@ -156,7 +156,7 @@ class CustomLoginControllerTest {
         List<String> bpRoleList = getBpRoleList(model);
         List<String> bpIds = bpRoleList.stream()
                 .map(id -> id.split(":")[0])
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(
                 List.of("10000000", "10000000", "10000000", "10000001", "10000001", "99", "abc"),
                 bpIds);
@@ -208,7 +208,7 @@ class CustomLoginControllerTest {
 
 
         return new CustomLoginController(clients.stream()
-                .collect(toMap(ClientData::getClientId, ClientData::toRegisteredClient)), users) {
+                .collect(toMap(ClientData::getClientId, ClientData::toRegisteredClient)), users, new HttpSessionRequestCache()) {
             @Override
             RegisteredClient getClientFromSavedRequest(HttpServletRequest request) {
                 return clientData.toRegisteredClient();

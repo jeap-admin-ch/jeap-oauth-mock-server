@@ -149,9 +149,9 @@ public final class OAuth2ClientCredentialsAuthenticationProvider implements Auth
 				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
 				.authorizedScopes(authorizedScopes);
 		// @formatter:on
-		if (generatedAccessToken instanceof ClaimAccessor) {
-			authorizationBuilder.token(accessToken, (metadata) ->
-					metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, ((ClaimAccessor) generatedAccessToken).getClaims()));
+		if (generatedAccessToken instanceof ClaimAccessor claimAccessor) {
+			authorizationBuilder.token(accessToken, metadata ->
+					metadata.put(OAuth2Authorization.Token.CLAIMS_METADATA_NAME, claimAccessor.getClaims()));
 		} else {
 			authorizationBuilder.accessToken(accessToken);
 		}

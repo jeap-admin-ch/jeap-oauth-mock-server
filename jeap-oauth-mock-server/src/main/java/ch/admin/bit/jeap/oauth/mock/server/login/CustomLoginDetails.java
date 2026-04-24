@@ -119,7 +119,7 @@ public class CustomLoginDetails extends WebAuthenticationDetails {
                 .flatMap(entry -> entry.getValue().stream().map(bpRole -> entry.getKey() + BP_ROLE_SEPARATOR + bpRole))
                 .distinct()
                 .sorted()
-                .collect(toList());
+                .toList();
     }
 
     private static Map<String, List<String>> bpRolesFromFlatList(List<String> bpRoles) {

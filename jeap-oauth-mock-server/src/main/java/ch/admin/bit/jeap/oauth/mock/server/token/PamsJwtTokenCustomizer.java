@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.OAuth2TokenIntrospectionClaimNames;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
+import org.springframework.security.oauth2.server.authorization.OAuth2ClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.oidc.OidcClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -204,7 +205,7 @@ public class PamsJwtTokenCustomizer extends AbstractJwtTokenCustomizer {
     }
 
     private void updatePamsClaimsForIdToken(String clientId, Map<String, Object> claims) {
-        claims.remove(OidcClientMetadataClaimNames.SCOPE);
+        claims.remove(OAuth2ClientMetadataClaimNames.SCOPE);
 
         // Audience must be set to the clientID for the ID token
         claims.put(IdTokenClaimNames.AUD, clientId);

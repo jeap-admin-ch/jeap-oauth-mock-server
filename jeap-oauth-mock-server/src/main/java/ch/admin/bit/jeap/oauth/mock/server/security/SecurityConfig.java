@@ -39,13 +39,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.authorization.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.*;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
@@ -56,8 +59,6 @@ import org.springframework.security.oauth2.server.authorization.authentication.O
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
@@ -65,6 +66,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -76,15 +78,18 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.TimeUnit.DAYS;
-import static java.util.stream.Collectors.toList;
 
 @Configuration
 @Slf4j
+@SuppressWarnings("java:S6437")
 public class SecurityConfig {
     private static final String SECRET = "secret";
 
@@ -96,16 +101,28 @@ public class SecurityConfig {
     }
 
     @Bean
+    public HttpSessionRequestCache requestCache() {
+        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+        requestCache.setRequestMatcher(request ->
+                !request.getRequestURI().contains("/assets/")
+                        && !request.getRequestURI().contains("/styles/")
+                        && !request.getRequestURI().contains("/favicon.ico")
+        );
+        return requestCache;
+    }
+
+    @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder, OAuthMockData oAuthMockData) throws Exception {
-        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
-                OAuth2AuthorizationServerConfigurer.authorizationServer();
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder, OAuthMockData oAuthMockData) {
+        OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
                 .with(authorizationServerConfigurer, Customizer.withDefaults())
-                .authorizeHttpRequests((authorize) ->
+                .authorizeHttpRequests(authorize ->
                         authorize.anyRequest().authenticated()
                 );
+
+        http.requestCache(cache -> cache.requestCache(requestCache()));
 
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.addFilterBefore(
@@ -128,7 +145,7 @@ public class SecurityConfig {
         http
                 // Redirect to the login page when not authenticated from the
                 // authorization endpoint
-                .exceptionHandling((exceptions) -> exceptions
+                .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(
                                 new LoginUrlAuthenticationEntryPoint(CustomLoginController.LOGIN_FORM_PATH))
                 )
@@ -141,15 +158,17 @@ public class SecurityConfig {
     @SuppressWarnings("Convert2MethodRef")
     @Bean
     @Order(2)
-    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.csrf(c -> c.disable());
         http.headers(h -> h
                 .frameOptions(f -> f.disable())
                 .contentSecurityPolicy(p -> p.policyDirectives("frame-ancestors 'self' http://*:* https://*:*")));
 
+        http.requestCache(cache -> cache.requestCache(requestCache()));
+
         http
-                .authorizeHttpRequests((authorize) -> {
+                .authorizeHttpRequests(authorize -> {
                             authorize.requestMatchers(CustomLoginController.LOGIN_FORM_PATH).permitAll();
                             authorize.requestMatchers("/styles/**").permitAll();
                             authorize.requestMatchers("/favicon.ico").permitAll();
@@ -186,14 +205,14 @@ public class SecurityConfig {
     public RegisteredClientRepository registeredClientRepository(OAuthMockData oAuthMockData) {
         return new InMemoryRegisteredClientRepository(oAuthMockData.getClients().stream()
                 .map(ClientData::toRegisteredClient)
-                .collect(toList()));
+                .toList());
     }
 
     @Bean
     public UserDetailsService userDetailsService(OAuthMockData oAuthMockData) {
         List<UserDetails> userDetails = oAuthMockData.getUsers().stream()
                 .map(this::createUserDetails)
-                .collect(Collectors.toList());
+                .toList();
 
         return new InMemoryUserDetailsManager(userDetails);
     }
@@ -226,7 +245,6 @@ public class SecurityConfig {
 
         // Convert to DER format and Base64 encode
         byte[] derEncoded = certificate.getEncoded();
-        String base64Encoded = Base64.getEncoder().encodeToString(derEncoded);
 
         // Compute SHA-1 and SHA-256 thumbprints
         MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
@@ -328,8 +346,8 @@ public class SecurityConfig {
      * See <a href="https://docs.spring.io/spring-authorization-server/docs/0.4.0/reference/html/protocol-endpoints.html#oauth2-authorization-endpoint">Docs</a>
      */
     private Consumer<List<AuthenticationProvider>> configureAuthenticationValidator() {
-        return (authenticationProviders) ->
-                authenticationProviders.forEach((authenticationProvider) -> {
+        return authenticationProviders ->
+                authenticationProviders.forEach(authenticationProvider -> {
                     if (authenticationProvider instanceof OAuth2AuthorizationCodeRequestAuthenticationProvider oauthProvider) {
                         Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> authenticationValidator =
                                 // Override default redirect_uri validator to allow for redirect URIs with "localhost"

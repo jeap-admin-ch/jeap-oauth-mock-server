@@ -63,7 +63,7 @@ public class UserInfoMapper implements Function<OidcUserInfoAuthenticationContex
     }
 
     private static Map<String, Object> getClaimsRequestedByScope(Map<String, Object> claims, Set<String> requestedScopes) {
-        Set<String> scopeRequestedClaimNames = new HashSet<>(32);
+        Set<String> scopeRequestedClaimNames = HashSet.newHashSet(32);
         scopeRequestedClaimNames.add(StandardClaimNames.SUB);
 
         if (requestedScopes.contains(OidcScopes.ADDRESS)) {
