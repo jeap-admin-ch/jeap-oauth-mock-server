@@ -106,6 +106,7 @@ public class CustomLoginController {
         return clientData;
     }
 
+    @SuppressWarnings("java:S4449")
     RegisteredClient getClientFromSavedRequest(HttpServletRequest request) {
         SavedRequest oauthRequest = requestCache.getRequest(request, null);
         String[] clientIds = oauthRequest == null ? null : oauthRequest.getParameterValues("client_id");

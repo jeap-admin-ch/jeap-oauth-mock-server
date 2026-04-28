@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2ClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.oidc.OidcClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class EiamJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
     protected void customizeAccessToken(JwtEncodingContext context, Map<String, Object> claims) {
         String clientId = getClientIdFromSecurityContext();
         setClaims(clientId, claims, context.getPrincipal());
-        log.info("Issued access token with claims " + claims);
+        log.info("Issued access token with claims {}", claims);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class EiamJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
         String clientId = getClientIdFromSecurityContext();
         setClaims(clientId, claims, context.getPrincipal());
         updateClaimsForIdToken(clientId, claims);
-        log.info("Issued id token with claims " + claims);
+        log.info("Issued id token with claims {}", claims);
     }
 
     private void setClaims(String clientId, Map<String, Object> claims, Authentication userAuthentication) {
@@ -105,6 +104,7 @@ public class EiamJwtAccessTokenCustomizer extends AbstractJwtTokenCustomizer {
         return UUID.randomUUID().toString();
     }
 
+    @SuppressWarnings("java:S2259")
     private UserData getUserDataIfInUserContext(Authentication userAuthentication) {
         if (userAuthentication == null || !(userAuthentication.getPrincipal() instanceof User user)) {
             return null;

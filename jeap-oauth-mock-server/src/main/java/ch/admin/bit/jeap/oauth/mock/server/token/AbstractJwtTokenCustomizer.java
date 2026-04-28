@@ -79,7 +79,7 @@ public abstract class AbstractJwtTokenCustomizer implements OAuth2TokenCustomize
     }
 
     /**
-     * @return The {@link UserData} from the mock server's configuration for the given user name
+     * @return The {@link UserData} from the mock server's configuration for the given username
      * @throws OAuth2AuthenticationException if a user with this name is not found in the mock server configuration
      */
     protected UserData requireUser(String name) {
@@ -93,6 +93,7 @@ public abstract class AbstractJwtTokenCustomizer implements OAuth2TokenCustomize
     /**
      * @return The client ID for which a token is issued
      */
+    @SuppressWarnings("java:S2259")
     protected static String getClientIdFromSecurityContext() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof User user) {

@@ -33,7 +33,7 @@
 
     <artifactId>jeap-oauth-mock-server-parent</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
-    <version>4.0.0-alpha-springboot4-SNAPSHOT</version>
+    <version>4.0.1-alpha-springboot4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>Parent project of the OAuth / OpenID Connect Mock Server</description>
 
@@ -52,7 +52,7 @@
             <dependency>
                 <groupId>ch.admin.bit.jeap</groupId>
                 <artifactId>jeap-oauth-mock-server</artifactId>
-                <version>4.0.0-alpha-springboot4-SNAPSHOT</version>
+                <version>4.0.1-alpha-springboot4-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
 import org.springframework.security.oauth2.server.authorization.OAuth2ClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
-import org.springframework.security.oauth2.server.authorization.oidc.OidcClientMetadataClaimNames;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
@@ -144,6 +143,7 @@ public class PamsJwtTokenCustomizer extends AbstractJwtTokenCustomizer {
         return UUID.randomUUID().toString();
     }
 
+    @SuppressWarnings("java:S2259")
     private UserData getUserDataIfInUserContext(Authentication userAuthentication) {
         if (userAuthentication == null || !(userAuthentication.getPrincipal() instanceof User user)) {
             return null;
