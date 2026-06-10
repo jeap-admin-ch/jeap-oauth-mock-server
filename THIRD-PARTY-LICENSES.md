@@ -13,6 +13,7 @@ Apache License Version 2.0
  * ch.admin.bit.jeap:jeap-spring-boot-logging-starter - [ch.admin.bit.jeap:jeap-spring-boot-logging-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-logging-starter)
  * ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter - [ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-monitoring-starter)
  * ch.admin.bit.jeap:jeap-spring-boot-rest-request-tracing - [ch.admin.bit.jeap:jeap-spring-boot-rest-request-tracing](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-rest-request-tracing)
+ * ch.admin.bit.jeap:jeap-spring-boot-web-config-starter - [ch.admin.bit.jeap:jeap-spring-boot-web-config-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-web-config-starter)
  * ClassMate - [com.fasterxml:classmate](https://github.com/FasterXML/java-classmate)
  * Jackson-annotations - [com.fasterxml.jackson.core:jackson-annotations](https://github.com/FasterXML/jackson)
  * Jackson-core - [com.fasterxml.jackson.core:jackson-core](https://github.com/FasterXML/jackson-core)
