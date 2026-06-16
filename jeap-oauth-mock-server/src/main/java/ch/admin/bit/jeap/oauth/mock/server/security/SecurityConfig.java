@@ -190,7 +190,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin(ANY);
+        configuration.addAllowedOrigin(ANY); //NOSONAR Mock server intentionally allows broad CORS for test clients
         configuration.addAllowedHeader(ANY);
         configuration.addAllowedMethod(ANY);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -240,6 +240,7 @@ public class SecurityConfig {
         return new ImmutableJWKSet<>(new JWKSet(rsaKey));
     }
 
+    @SuppressWarnings("java:S1874") // Keep deprecated x5t (SHA-1) for Keycloak-compatible JWK output
     private static RSAKey getRsaKey(KeyPair keyPair, RSAPrivateKey privateKey, RSAPublicKey publicKey) throws OperatorCreationException, CertificateException, NoSuchAlgorithmException {
         X509Certificate certificate = getX509Certificate(keyPair, privateKey);
 
@@ -252,8 +253,6 @@ public class SecurityConfig {
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
         byte[] sha256Digest = sha256.digest(derEncoded);
 
-        // x5t is deprecated, but still used by keycloak
-        //noinspection deprecation
         return new RSAKey.Builder(publicKey)
                 .privateKey(privateKey)
                 .keyID(UUID.randomUUID().toString())

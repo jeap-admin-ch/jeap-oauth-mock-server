@@ -49,7 +49,7 @@ public class JeapRolesPruningTokenMapper {
         if (bpRoles.isEmpty()) {
             return 0;
         }
-        int size = 12; // "bproles":{}
+        int size = 12; // "bproles":{} //NOSONAR
         for (var entry : bpRoles.entrySet()) {
             size += entry.getKey().length() + 5; // "..":[..]
             size += calculateRoleListSize(entry.getValue());

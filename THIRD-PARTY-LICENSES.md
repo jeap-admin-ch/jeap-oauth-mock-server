@@ -8,7 +8,6 @@ Third-party dependencies grouped by their license type (see [pom.xml](/pom.xml) 
 Apache License Version 2.0
 -------------------------------
 
- * ch.admin.bit.jeap:jeap-oauth-mock-server - [ch.admin.bit.jeap:jeap-oauth-mock-server](https://github.com/jeap-admin-ch/jeap-oauth-mock-server/tree/main/jeap-oauth-mock-server)
  * ch.admin.bit.jeap:jeap-spring-boot-application-starter - [ch.admin.bit.jeap:jeap-spring-boot-application-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-application-starter)
  * ch.admin.bit.jeap:jeap-spring-boot-logging-starter - [ch.admin.bit.jeap:jeap-spring-boot-logging-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-logging-starter)
  * ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter - [ch.admin.bit.jeap:jeap-spring-boot-monitoring-starter](https://github.com/jeap-admin-ch/jeap-spring-boot-starters/tree/main/jeap-spring-boot-monitoring-starter)
@@ -128,10 +127,10 @@ Apache License Version 2.0
  * spring-boot-starter-jackson - [org.springframework.boot:spring-boot-starter-jackson](https://spring.io/projects/spring-boot)
  * spring-boot-starter-logging - [org.springframework.boot:spring-boot-starter-logging](https://spring.io/projects/spring-boot)
  * spring-boot-starter-micrometer-metrics - [org.springframework.boot:spring-boot-starter-micrometer-metrics](https://spring.io/projects/spring-boot)
- * spring-boot-starter-oauth2-client - [org.springframework.boot:spring-boot-starter-oauth2-client](https://spring.io/projects/spring-boot)
  * spring-boot-starter-opentelemetry - [org.springframework.boot:spring-boot-starter-opentelemetry](https://spring.io/projects/spring-boot)
  * spring-boot-starter-restclient - [org.springframework.boot:spring-boot-starter-restclient](https://spring.io/projects/spring-boot)
  * spring-boot-starter-security - [org.springframework.boot:spring-boot-starter-security](https://spring.io/projects/spring-boot)
+ * spring-boot-starter-security-oauth2-client - [org.springframework.boot:spring-boot-starter-security-oauth2-client](https://spring.io/projects/spring-boot)
  * spring-boot-starter-test - [org.springframework.boot:spring-boot-starter-test](https://spring.io/projects/spring-boot)
  * spring-boot-starter-thymeleaf - [org.springframework.boot:spring-boot-starter-thymeleaf](https://spring.io/projects/spring-boot)
  * spring-boot-starter-tomcat - [org.springframework.boot:spring-boot-starter-tomcat](https://spring.io/projects/spring-boot)

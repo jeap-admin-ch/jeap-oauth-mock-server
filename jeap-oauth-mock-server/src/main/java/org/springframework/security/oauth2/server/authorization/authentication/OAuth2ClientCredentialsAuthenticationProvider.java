@@ -104,10 +104,7 @@ public final class OAuth2ClientCredentialsAuthenticationProvider implements Auth
 		if (!CollectionUtils.isEmpty(clientCredentialsAuthentication.getScopes())) {
 			// Replacing the following two lines to support dynamic scopes in the validation of requested scopes
 			if (!requestedScopesMatchingAllowedScopes(clientCredentialsAuthentication.getScopes(), registeredClient.getScopes())) {
-//			for (String requestedScope : clientCredentialsAuthentication.getScopes()) {
-//				if (!registeredClient.getScopes().contains(requestedScope)) {
-					throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
-//				}
+				throw new OAuth2AuthenticationException(OAuth2ErrorCodes.INVALID_SCOPE);
 			}
 			authorizedScopes = new LinkedHashSet<>(clientCredentialsAuthentication.getScopes());
 		}

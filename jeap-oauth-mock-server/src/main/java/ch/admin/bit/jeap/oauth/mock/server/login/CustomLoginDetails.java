@@ -50,7 +50,8 @@ public class CustomLoginDetails extends WebAuthenticationDetails {
                 adminDirUID, loginLevel, userroles, additionaluserroles, bproles, additionalbproles);
     }
 
-    CustomLoginDetails(HttpServletRequest request, String givenName, String familyName, String email, String locale,
+    @SuppressWarnings("java:S107")
+    CustomLoginDetails(HttpServletRequest request, String givenName, String familyName, String email, String locale, //NOSONAR Request parameter mapping intentionally needs many inputs
                        String preferredUserName, String extId, String adminDirUID, String loginLevel, String[] userRoles,
                        String additionalUserRoles, String[] bpRoles, String additionalBpRoles) {
         super(request);

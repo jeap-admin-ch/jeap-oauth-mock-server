@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.*;
 
 @Data
+@SuppressWarnings("java:S1845") // Some field names intentionally mirror externally configured claim/setting keys.
 public class ClientData {
     private static final String USERROLES = "userroles";
     private static final String BPROLES = "bproles";
