@@ -146,6 +146,12 @@ Bouncy Castle Licence
  * Bouncy Castle Provider - [org.bouncycastle:bcprov-jdk18on](https://www.bouncycastle.org/download/bouncy-castle-java/)
  * Bouncy Castle ASN.1 Extension and Utility APIs - [org.bouncycastle:bcutil-jdk18on](https://www.bouncycastle.org/download/bouncy-castle-java/)
 
+EPL-2.0
+-------------------------------
+
+ * Logback Classic Module - [ch.qos.logback:logback-classic](http://logback.qos.ch/logback-classic)
+ * Logback Core Module - [ch.qos.logback:logback-core](http://logback.qos.ch/logback-core)
+
 Eclipse Distribution License - v 1.0
 -------------------------------
 
@@ -155,8 +161,6 @@ Eclipse Distribution License - v 1.0
 Eclipse Public License v2.0
 -------------------------------
 
- * Logback Classic Module - [ch.qos.logback:logback-classic](http://logback.qos.ch/logback-classic)
- * Logback Core Module - [ch.qos.logback:logback-core](http://logback.qos.ch/logback-core)
  * Jakarta Annotations API - [jakarta.annotation:jakarta.annotation-api](https://projects.eclipse.org/projects/ee4j.ca)
  * AspectJ Weaver - [org.aspectj:aspectjweaver](https://www.eclipse.org/aspectj/)
  * JUnit Jupiter (Aggregator) - [org.junit.jupiter:junit-jupiter](https://junit.org/junit5/)
@@ -171,7 +175,7 @@ GNU General Public License, version 2 (GPL2), with the classpath exception
 
  * Jakarta Annotations API - [jakarta.annotation:jakarta.annotation-api](https://projects.eclipse.org/projects/ee4j.ca)
 
-GNU Lesser General Public License
+LGPL-2.1-only
 -------------------------------
 
  * Logback Classic Module - [ch.qos.logback:logback-classic](http://logback.qos.ch/logback-classic)
