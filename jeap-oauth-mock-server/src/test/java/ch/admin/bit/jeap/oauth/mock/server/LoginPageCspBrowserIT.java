@@ -1,10 +1,6 @@
 package ch.admin.bit.jeap.oauth.mock.server;
 
-import com.microsoft.playwright.APIResponse;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Request;
+import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.FormData;
 import com.microsoft.playwright.options.RequestOptions;
 import org.junit.jupiter.api.*;
@@ -27,7 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * actually enforces the policy and reports "Refused to execute inline event handler" - the exact failure that
  * shipped when the pages still used inline {@code onchange}/{@code javascript:} handlers.
  * <p>
- * Requires a Playwright Chromium browser to be installed.
+ * Uses the system-installed Google Chrome via the Playwright "chrome" channel (provided by the CI build image),
+ * so Playwright does not download its own bundled Chromium build.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"login-page-test"})
@@ -50,7 +47,8 @@ class LoginPageCspBrowserIT {
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch();
+        // Use the system-installed Google Chrome instead of Playwright's own (downloaded) Chromium build.
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome"));
     }
 
     @AfterAll
