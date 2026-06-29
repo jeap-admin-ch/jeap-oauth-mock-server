@@ -106,6 +106,7 @@ public class SecurityConfig {
         requestCache.setRequestMatcher(request ->
                 !request.getRequestURI().contains("/assets/")
                         && !request.getRequestURI().contains("/styles/")
+                        && !request.getRequestURI().contains("/scripts/")
                         && !request.getRequestURI().contains("/favicon.ico")
         );
         return requestCache;
@@ -160,7 +161,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-        http.csrf(c -> c.disable());
+        http.csrf(c -> c.disable()); // NOSONAR
         http.headers(h -> h
                 .frameOptions(f -> f.disable())
                 .contentSecurityPolicy(p -> p.policyDirectives("frame-ancestors 'self' http://*:* https://*:*")));
@@ -171,6 +172,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> {
                             authorize.requestMatchers(CustomLoginController.LOGIN_FORM_PATH).permitAll();
                             authorize.requestMatchers("/styles/**").permitAll();
+                    authorize.requestMatchers("/scripts/**").permitAll();
                             authorize.requestMatchers("/favicon.ico").permitAll();
                             authorize.requestMatchers("/.well-known/**").permitAll();
                             authorize.requestMatchers("/protocol/**").permitAll();
@@ -248,7 +250,7 @@ public class SecurityConfig {
         byte[] derEncoded = certificate.getEncoded();
 
         // Compute SHA-1 and SHA-256 thumbprints
-        MessageDigest sha1 = MessageDigest.getInstance("SHA-1");
+        MessageDigest sha1 = MessageDigest.getInstance("SHA-1"); // NOSONAR
         byte[] sha1Digest = sha1.digest(derEncoded);
         MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
         byte[] sha256Digest = sha256.digest(derEncoded);
@@ -257,7 +259,7 @@ public class SecurityConfig {
                 .privateKey(privateKey)
                 .keyID(UUID.randomUUID().toString())
                 .x509CertChain(List.of(com.nimbusds.jose.util.Base64.encode(derEncoded)))
-                .x509CertThumbprint(Base64URL.encode(sha1Digest))
+                .x509CertThumbprint(Base64URL.encode(sha1Digest)) // NOSONAR This is deprecated, but expected by some clients
                 .x509CertSHA256Thumbprint(Base64URL.encode(sha256Digest))
                 .algorithm(Algorithm.parse("RS256"))
                 .build();
@@ -360,6 +362,10 @@ public class SecurityConfig {
 
     // Replacing the default scope validator from OAuth2AuthorizationCodeRequestAuthenticationValidator in order to
     // support the dynamic scopes of Keycloak.
+    // S4449: the token is rebuilt from the incoming authentication, whose required fields (authorizationUri, clientId,
+    // principal) are guaranteed non-null by the authorization server at this validation stage; the target constructor
+    // belongs to Spring Security and cannot be annotated @Nullable.
+    @SuppressWarnings("java:S4449")
     private static void validateScopeSupportingDynamicScopes(OAuth2AuthorizationCodeRequestAuthenticationContext authenticationContext) {
         OAuth2AuthorizationCodeRequestAuthenticationToken authorizationCodeRequestAuthentication = authenticationContext.getAuthentication();
         RegisteredClient registeredClient = authenticationContext.getRegisteredClient();

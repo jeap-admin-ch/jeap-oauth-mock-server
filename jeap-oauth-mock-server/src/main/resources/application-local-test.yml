@@ -1,5 +1,15 @@
+spring:
+  application:
+    name: jeap-oauth-mock-server
+  mvc:
+    log-resolved-exception: true
+  main:
+    banner-mode: off
+
 server:
   port: 8180
+  servlet:
+    context-path: /${spring.application.name}
 
 # Mock server configuration for authorization code flow tests
 
@@ -23,10 +33,27 @@ oauth-mock-data:
       preferred-username: "12345"
       ext-id: "56789"
       login-level: "S1+OK"
+      userroles:
+        - "userrole"
       additional-claims:
         # example on how to add any other claim into the token
         "acr": 'urn:someurl.ch:names:tc:SAML:2.0:ac:classes:AuthVeryStrong'
 
+    - id: "another-user"
+      given-name: "Henry"
+      family-name: "Muster"
+      locale: "DE"
+      preferred-username: "67890"
+      ext-id: "12345"
+      login-level: "S1+OK"
+      userroles:
+        - "another-userrole"
+      bproles:
+        "67890": [ "another-bprole" ]
+
 logging.level:
   org.springframework.security: debug
   org.springframework.security.oauth2.server: trace
+  org.springframework.web: debug
+  ch.admin.bit.jeap: debug
+

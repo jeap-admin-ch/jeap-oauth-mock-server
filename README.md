@@ -28,6 +28,38 @@ public class MyTokenCustomizer extends AbstractJwtTokenCustomizer {
 }
 ```
 
+## Local Development with the `local-test` Profile
+
+To run the mock server locally for development or manual testing, start the application with the `local-test` profile.
+The server will be available at `http://localhost:8180/jeap-oauth-mock-server`.
+
+### Accessing the Login Form
+
+The login form at `/openIdMockServerLogin` cannot be accessed directly — it requires a saved OAuth authorization
+request in the session. To reach the login form, initiate an authorization code flow by navigating to:
+
+```
+http://localhost:8180/jeap-oauth-mock-server/oauth2/authorize?response_type=code&client_id=test-client&redirect_uri=http://redirect&scope=openid&code_challenge=JBbiqONGWPaAmwXk_8bT6UnlPfrn65D32eZlJS-zGG0&code_challenge_method=S256
+```
+
+Spring Security will intercept the unauthenticated request and redirect you to the login form with the correct
+client context.
+
+> **Note:** The server requires PKCE with S256 ([RFC 7636](https://datatracker.ietf.org/doc/html/rfc7636)).
+> The URL above uses a pre-computed challenge derived from the verifier `test-verifier`.
+
+### Pre-configured Test Data (`local-test` profile)
+
+| Parameter               | Value                                         |
+|-------------------------|-----------------------------------------------|
+| `client_id`             | `test-client`                                 |
+| `redirect_uri`          | `http://redirect`                             |
+| `scope`                 | `openid`                                      |
+| `code_challenge`        | `JBbiqONGWPaAmwXk_8bT6UnlPfrn65D32eZlJS-zGG0` |
+| `code_challenge_method` | `S256`                                        |
+
+Two users are available: `user` (Henriette Muster) and `another-user` (Henry Muster).
+
 ## JWT signing key pair
 
 JWTs signed by the server require a public/private key pair. The public key is exposed under the endpoint

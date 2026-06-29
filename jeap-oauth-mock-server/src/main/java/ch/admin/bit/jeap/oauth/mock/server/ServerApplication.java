@@ -10,7 +10,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @Slf4j
 public class ServerApplication {
 
-    public static void main(String[] args) {
+    private ServerApplication() {
+        // private constructor to prevent instantiation
+    }
+
+    static void main(String[] args) {
         SpringApplication.run(ServerApplication.class, args);
     }
 }
