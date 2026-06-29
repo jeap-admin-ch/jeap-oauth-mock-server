@@ -43,6 +43,15 @@ class AuthorizationCodeFlowTestBase {
         return retrieveTokenUsingAuthCodeFlow(tokenName, "test-client", Set.of(), Set.of("12345:bprole"));
     }
 
+    /**
+     * Drives the OAuth2 authorization request far enough to obtain the login-form URL with a valid session (i.e. a saved
+     * authorization request), without completing the login. Useful for asserting on the login page response itself.
+     */
+    protected String startOAuthFlowToLoginForm() {
+        String codeChallenge = createCodeChallenge(createCodeVerifier());
+        return startOAuthFlow(codeChallenge, "test-client", Set.of());
+    }
+
     protected String retrieveTokenUsingAuthCodeFlow(String tokenName, Set<String> bpRoles) {
         return retrieveTokenUsingAuthCodeFlow(tokenName, "test-client", Set.of(), bpRoles);
     }
