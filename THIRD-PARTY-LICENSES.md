@@ -21,7 +21,7 @@ Apache License Version 2.0
  * error-prone annotations - [com.google.errorprone:error_prone_annotations](https://errorprone.info/error_prone_annotations)
  * json-path - [com.jayway.jsonpath:json-path](https://github.com/jayway/JsonPath)
  * Playwright - Driver - [com.microsoft.playwright:driver](https://github.com/microsoft/playwright-java/driver)
- * Playwright - Drivers For All Platforms - [com.microsoft.playwright:driver-bundle](https://github.com/microsoft/playwright-java/driver-bundle)
+ * Playwright - Node.js For All Platforms - [com.microsoft.playwright:driver-bundle](https://github.com/microsoft/playwright-java/driver-bundle)
  * Playwright - Main Library - [com.microsoft.playwright:playwright](https://github.com/microsoft/playwright-java/playwright)
  * Nimbus Content Type - [com.nimbusds:content-type](https://bitbucket.org/connect2id/nimbus-content-type)
  * Nimbus LangTag - [com.nimbusds:lang-tag](https://bitbucket.org/connect2id/nimbus-language-tags)
