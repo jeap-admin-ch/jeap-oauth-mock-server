@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,8 +47,8 @@ class LoginPageCspBrowserIT {
 
     @BeforeAll
     static void launchBrowser() {
-        playwright = Playwright.create();
-        // Use the system-installed Google Chrome instead of Playwright's own (downloaded) Chromium build.
+        playwright = Playwright.create(new Playwright.CreateOptions()
+                .setEnv(Map.of("PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD", "1")));
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome"));
     }
 

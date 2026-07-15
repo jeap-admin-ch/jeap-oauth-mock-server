@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.6.1] - 2026-07-15
+
+### Fixed
+
+- Skip Playwright browser download when launching the system-installed Chrome in the login page CSP test
+
 ## [6.6.0] - 2026-07-15
 
 ### Dependencies
