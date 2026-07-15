@@ -267,8 +267,9 @@ public class SecurityConfig {
 
     private static X509Certificate getX509Certificate(KeyPair keyPair, RSAPrivateKey privateKey) throws OperatorCreationException, CertificateException {
         // Create the X.509 certificate
-        X500Name issuer = new X500Name("CN=Mock Server CA, O=jEAP, L=Bern, ST=Bern, C=Switzerland");
-        X500Name subject = new X500Name("CN=Mock Subject, O=jEAP, L=Bern, ST=Bern, C=Switzerland");
+        // The country attribute must be a two-letter ISO 3166-1 code, enforced by Bouncycastle >= 1.85 (JEAP-7270)
+        X500Name issuer = new X500Name("CN=Mock Server CA, O=jEAP, L=Bern, ST=Bern, C=CH");
+        X500Name subject = new X500Name("CN=Mock Subject, O=jEAP, L=Bern, ST=Bern, C=CH");
 
         BigInteger serialNumber = new BigInteger(64, new java.security.SecureRandom());
         Date notBefore = new Date(System.currentTimeMillis() - DAYS.toMillis(24));

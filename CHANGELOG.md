@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [6.5.0] - 2026-07-15
+
+### Fixed
+
+- Use a two-letter ISO 3166-1 country code in the JWK signing certificate's subject/issuer DN, as enforced by Bouncycastle 1.85 (JEAP-7270)
+
+### Dependencies
+- **ch.admin.bit.jeap:jeap-spring-boot-parent**: 36.7.0 → 36.8.0 (minor)
+
 ## [6.4.0] - 2026-07-13
 
 ### Dependencies
