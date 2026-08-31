@@ -1,13 +1,18 @@
 package ch.admin.bit.jeap.oauth.mock.server;
 
+import ch.admin.bit.jeap.oauth.mock.server.config.ClientData;
+import ch.admin.bit.jeap.oauth.mock.server.config.OAuthMockData;
 import ch.admin.bit.jeap.oauth.mock.server.login.CustomLoginController;
 import com.nimbusds.jwt.JWTClaimsSet;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.oauth2.core.OAuth2AccessToken.TokenType;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.text.ParseException;
@@ -20,11 +25,70 @@ import static java.util.Collections.singletonList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"authorization-code-test"})
 class AuthorizationCodeFlowIntegrationTest extends AuthorizationCodeFlowTestBase {
+
+    private static final String POST_LOGOUT_REDIRECT_URI = "http://localhost/post-logout";
+
+    @Autowired
+    private OAuthMockData oAuthMockData;
+
+    @Autowired
+    private RegisteredClientRepository registeredClientRepository;
+
+    @Test
+    void clientConfiguration_shouldBindAndRegisterPostLogoutRedirectUris() {
+        ClientData configuredClient = oAuthMockData.getClients().stream()
+                .filter(client -> "test-client".equals(client.getClientId()))
+                .findFirst()
+                .orElseThrow();
+        ClientData clientUsingDefault = oAuthMockData.getClients().stream()
+                .filter(client -> "test-client-bpscoped".equals(client.getClientId()))
+                .findFirst()
+                .orElseThrow();
+
+        assertEquals(List.of(POST_LOGOUT_REDIRECT_URI, "http://localhost/alternative-post-logout"),
+                configuredClient.getRegisteredPostLogoutRedirectUri());
+        assertTrue(clientUsingDefault.getRegisteredPostLogoutRedirectUri().isEmpty());
+
+        RegisteredClient registeredClient = registeredClientRepository.findByClientId("test-client");
+        RegisteredClient registeredClientUsingDefault = registeredClientRepository.findByClientId("test-client-bpscoped");
+        assertNotNull(registeredClient);
+        assertNotNull(registeredClientUsingDefault);
+        assertEquals(Set.of(POST_LOGOUT_REDIRECT_URI, "http://localhost/alternative-post-logout"),
+                registeredClient.getPostLogoutRedirectUris());
+        assertTrue(registeredClientUsingDefault.getPostLogoutRedirectUris().isEmpty());
+    }
+
+    @Test
+    void endSessionRequest_shouldRedirectToRegisteredPostLogoutRedirectUri() {
+        String idToken = retrieveTokenUsingAuthCodeFlow("id_token");
+
+        request()
+                .queryParam("id_token_hint", idToken)
+                .queryParam("post_logout_redirect_uri", POST_LOGOUT_REDIRECT_URI)
+                .get("/connect/logout")
+                .then()
+                .statusCode(302)
+                .header(HttpHeaders.LOCATION, equalTo(POST_LOGOUT_REDIRECT_URI));
+    }
+
+    @Test
+    void endSessionRequest_shouldRejectUnregisteredPostLogoutRedirectUri() {
+        String idToken = retrieveTokenUsingAuthCodeFlow("id_token");
+
+        request()
+                .queryParam("id_token_hint", idToken)
+                .queryParam("post_logout_redirect_uri", "http://localhost/unregistered-post-logout")
+                .get("/connect/logout")
+                .then()
+                .statusCode(400)
+                .header(HttpHeaders.LOCATION, nullValue());
+    }
 
     @Test
     void tokenRequest_shouldReturnAccessToken() throws ParseException {

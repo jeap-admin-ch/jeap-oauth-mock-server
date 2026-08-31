@@ -31,6 +31,7 @@ public class ClientData {
     private String clientId;
     private String clientSecret = null;
     private List<String> registeredRedirectUri = List.of();
+    private List<String> registeredPostLogoutRedirectUri = List.of();
 
     private Long accessTokenValiditySeconds;
     private Long refreshTokenValiditySeconds;
@@ -68,6 +69,7 @@ public class ClientData {
                 })
                 .clientSettings(createClientSettings())
                 .redirectUris(uris -> uris.addAll(registeredRedirectUri))
+                .postLogoutRedirectUris(uris -> uris.addAll(registeredPostLogoutRedirectUri))
                 .tokenSettings(TokenSettings.builder()
                         .accessTokenTimeToLive(accessTokenValiditySeconds != null ? Duration.ofSeconds(accessTokenValiditySeconds) : DEFAULT_TOKEN_VALIDITY)
                         .refreshTokenTimeToLive(refreshTokenValiditySeconds != null ? Duration.ofSeconds(refreshTokenValiditySeconds) : DEFAULT_TOKEN_VALIDITY)

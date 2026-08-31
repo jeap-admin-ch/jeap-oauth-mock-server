@@ -24,6 +24,8 @@ oauth-mock-data:
       registered-redirect-uri:
         - "http://localhost:4200/startpage"
         - "http://localhost:4200/silent-refresh.html"
+      registered-post-logout-redirect-uri:
+        - "http://localhost:4200/"
       access-token-validity-seconds: 3600
       refresh-token-validity-seconds: 3600
       context: "USER"
@@ -67,6 +69,7 @@ Each entry defines one OAuth client.
 | `client-id` | string | yes | OAuth client id |
 | `client-secret` | string | no | Secret for authenticated clients; usually required for `client_credentials` |
 | `registered-redirect-uri` | list of strings | no | Allowed redirect URIs for `authorization_code`; wildcard suffix `*` is supported |
+| `registered-post-logout-redirect-uri` | list of strings | no | Allowed exact redirect URIs after an OpenID Connect end-session request |
 | `access-token-validity-seconds` | number | no | Access-token lifetime in seconds; default is 3600 |
 | `refresh-token-validity-seconds` | number | no | Refresh-token lifetime in seconds; default is 3600 |
 | `context` | `USER`, `SYS`, `B2B` | no | If set, fixes both the grant type and client authentication methods |
@@ -88,6 +91,10 @@ Each entry defines one OAuth client.
 
 If `context` is omitted, the server accepts `client_credentials` by default and also adds `authorization_code` when
 `registered-redirect-uri` is configured.
+
+The optional `registered-post-logout-redirect-uri` list controls redirects requested with `post_logout_redirect_uri`
+at the OpenID Connect end-session endpoint. The requested URI must exactly match a configured value. When the property
+is omitted, post-logout redirects remain disabled.
 
 ### Scopes
 

@@ -8,6 +8,9 @@ oauth-mock-data:
   clients:
     - client-id: "test-client"
       registered-redirect-uri: "http://localhost/redirect"
+      registered-post-logout-redirect-uri:
+        - "http://localhost/post-logout"
+        - "http://localhost/alternative-post-logout"
       bproles:
         "12345": [ "bprole" ]
       userroles: [ "userrole"]
