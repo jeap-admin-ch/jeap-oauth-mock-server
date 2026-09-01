@@ -7,12 +7,27 @@ oauth-mock-data:
     - client-id: "introspect-client"
       client-secret: "{noop}secret"
 
+    - client-id: "introspect-client-with-on"
+      client-secret: "{noop}secret"
+      introspection-endpoint-audience-check: on
+
     - client-id: "test-client"
       registered-redirect-uri: "http://localhost/redirect"
       context: "USER"
-      audience: [ "example-resource"]
-      scope: [ "openid"]
+      audience: ["example-resource"]
+      scope: ["openid"]
       roles-pruning-enabled: true
+
+    - client-id: "test-client-without-audience"
+      registered-redirect-uri: "http://localhost/redirect"
+      context: "USER"
+      scope: ["openid"]
+
+    - client-id: "test-client-with-audience"
+      registered-redirect-uri: "http://localhost/redirect"
+      context: "USER"
+      audience: ["example-resource", "introspect-client"]
+      scope: ["openid"]
 
   users:
     - id: "user"

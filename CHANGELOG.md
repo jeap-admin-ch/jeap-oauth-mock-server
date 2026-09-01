@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.6.0] - 2026-09-02
+
+### Added
+
+- Add `mockserver.introspection-endpoint-audience-check` with modes `off`, `warn`, and `on` (default: `off`), and log the configured mode at startup
+
+### Changed
+
+- Add audience validation in `CustomTokenIntrospectionAuthenticationProvider`: set `active=false` only in `on` mode when the client ID is missing from the token audience; keep `active=true` in `warn` and `off` modes
+
 ## [10.5.0] - 2026-08-31
 
 ### Added

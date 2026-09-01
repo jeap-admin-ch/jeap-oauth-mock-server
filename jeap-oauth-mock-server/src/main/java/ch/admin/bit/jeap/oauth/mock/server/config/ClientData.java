@@ -24,6 +24,7 @@ public class ClientData {
     private static final String BPROLES_SCOPE = "bproles:*";
     private static final String ROLES_PRUNING_ENABLED = "roles-pruning-enabled";
     private static final String ROLES_PRUNING_SCOPE = "roles-pruning";
+    public static final String INTROSPECTION_ENDPOINT_AUDIENCE_CHECK = "introspection-endpoint-audience-check";
 
     private static final Duration DEFAULT_TOKEN_VALIDITY = Duration.ofHours(1);
 
@@ -44,6 +45,7 @@ public class ClientData {
     private List<String> scope = List.of();
     private boolean bprolesScopeEnabled = false;
     private boolean rolesPruningEnabled = false;
+    private IntrospectionEndpointAudienceCheck introspectionEndpointAudienceCheck;
 
     public RegisteredClient toRegisteredClient() {
         return RegisteredClient.withId(UUID.randomUUID().toString())
@@ -95,6 +97,9 @@ public class ClientData {
             builder.setting(SUBJECT, subject);
         }
         builder.setting(BPROLES_SCOPE_ENABLED, bprolesScopeEnabled);
+        if (introspectionEndpointAudienceCheck != null) {
+            builder.setting(INTROSPECTION_ENDPOINT_AUDIENCE_CHECK, introspectionEndpointAudienceCheck);
+        }
         return builder.build();
     }
 

@@ -1,6 +1,8 @@
 package ch.admin.bit.jeap.oauth.mock.server;
 
 import ch.admin.bit.jeap.oauth.mock.server.OAuth2AccessTokenTestTemplate.TestClientConfig;
+import ch.admin.bit.jeap.oauth.mock.server.config.IntrospectionEndpointAudienceCheck;
+import ch.admin.bit.jeap.oauth.mock.server.config.MockServerConfig;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.restassured.RestAssured;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import tools.jackson.databind.ObjectMapper;
 
 import java.text.ParseException;
@@ -25,6 +28,8 @@ import static io.restassured.config.RestAssuredConfig.newConfig;
 import static io.restassured.config.SessionConfig.sessionConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles({"client-credentials-test-roles-pruning"})
@@ -35,10 +40,14 @@ class ClientCredentialsFlowIntegrationRolesPruningTest {
 
     private CookieFilter cookieFilter;
 
+    @MockitoSpyBean
+    private MockServerConfig mockServerConfig;
+
     @BeforeEach
     void setUp() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         cookieFilter = new CookieFilter();
+        doReturn("https://localhost").when(mockServerConfig).getBaseUrl();
     }
 
     @Test
@@ -171,6 +180,111 @@ class ClientCredentialsFlowIntegrationRolesPruningTest {
         assertThat(response.jsonPath().getMap("bproles")).isNull();
         assertThat(response.jsonPath().getList("roles_pruned_chars")).isNull();
 
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithoutAudience_checkAudienceDefault_returnTokenIsActive() {
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-without-audience")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isTrue();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithoutAudience_checkAudienceWarn_returnTokenIsActive() {
+        when(mockServerConfig.getIntrospectionEndpointAudienceCheck()).thenReturn(IntrospectionEndpointAudienceCheck.WARN);
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-bproles-scoped")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isTrue();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithoutAudience_checkAudienceOn_returnTokenIsNotActive() {
+        when(mockServerConfig.getIntrospectionEndpointAudienceCheck()).thenReturn(IntrospectionEndpointAudienceCheck.ON);
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-without-audience")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isFalse();
+        assertThat(response.jsonPath().getList("userroles")).isNull();
+        assertThat(response.jsonPath().getMap("bproles")).isNull();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithWrongAudience_checkAudienceOn_returnTokenIsNotActive() {
+        when(mockServerConfig.getIntrospectionEndpointAudienceCheck()).thenReturn(IntrospectionEndpointAudienceCheck.ON);
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-bproles-scoped")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isFalse();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithCorrectAudience_checkAudienceOn_returnTokenIsActive() {
+        when(mockServerConfig.getIntrospectionEndpointAudienceCheck()).thenReturn(IntrospectionEndpointAudienceCheck.ON);
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-with-audience")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+        Response response = callIntrospectionEndpoint("introspect-client", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isTrue();
+        assertThat(response.jsonPath().getMap("bproles")).isNotEmpty();
+        assertThat(response.jsonPath().getList("userroles")).isNotEmpty();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithoutAudience_checkAudienceDefaultButConfiguredInClient_returnTokenIsNotActive() {
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-without-audience")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client-with-on", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isFalse();
+    }
+
+    @Test
+    @SneakyThrows
+    void introspectionEndpointWithAudience_checkAudienceDefaultButConfiguredInClient_returnTokenIsActive() {
+        TestClientConfig clientConfig = TestClientConfig.builder()
+                .clientId("test-client-with-audience")
+                .build();
+
+        // when
+        OAuth2AccessToken accessToken = new OAuth2AccessTokenTestTemplate(clientConfig, localServerPort).requestAccessToken();
+
+        Response response = callIntrospectionEndpoint("introspect-client-with-on", accessToken);
+        assertThat(response.jsonPath().getBoolean("active")).isTrue();
     }
 
     private Response callIntrospectionEndpoint(String s, OAuth2AccessToken accessToken) {

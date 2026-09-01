@@ -114,7 +114,7 @@ public class SecurityConfig {
 
     @Bean
     @Order(1)
-    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder, OAuthMockData oAuthMockData) {
+    public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder, OAuthMockData oAuthMockData, MockServerConfig mockServerConfig) {
         OAuth2AuthorizationServerConfigurer authorizationServerConfigurer = new OAuth2AuthorizationServerConfigurer();
         http
                 .securityMatcher(authorizationServerConfigurer.getEndpointsMatcher())
@@ -135,7 +135,7 @@ public class SecurityConfig {
                                 .authenticationProviders(configureAuthenticationValidator())
                 )
                 .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint ->
-                        tokenIntrospectionEndpoint.authenticationProvider(new CustomTokenIntrospectionAuthenticationProvider(authorizationService(), jwtDecoder, oAuthMockData)
+                        tokenIntrospectionEndpoint.authenticationProvider(new CustomTokenIntrospectionAuthenticationProvider(authorizationService(), jwtDecoder, oAuthMockData, mockServerConfig)
                         )
                 )
                 // Enable OpenID Connect 1.0

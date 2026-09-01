@@ -2,7 +2,7 @@
 
 The mock server is configured through two property groups:
 
-- `mockserver.base-url` for issuer and public endpoint generation
+- `mockserver.*` for server-wide behavior (issuer URL, public endpoint generation and introspection audience-check mode)
 - `oauth-mock-data.*` for clients, users, and roles pruning
 
 ## Server base URL
@@ -17,10 +17,15 @@ The value becomes the OpenID issuer and is used together with the fixed JWK path
 ## Full example
 
 ```yaml
+mockserver:
+  base-url: "http://localhost:8180"
+  introspection-endpoint-audience-check: "off"
+
 oauth-mock-data:
   clients:
     - client-id: "example-client"
       client-secret: "{noop}secret"
+      introspection-endpoint-audience-check: "warn"
       registered-redirect-uri:
         - "http://localhost:4200/startpage"
         - "http://localhost:4200/silent-refresh.html"
@@ -80,6 +85,7 @@ Each entry defines one OAuth client.
 | `bproles` | map string to list of strings | no | Default `bproles` claim for this client |
 | `bproles-scope-enabled` | boolean | no | Enables the dynamic scope pattern `bproles:*`; default `false` |
 | `roles-pruning-enabled` | boolean | no | Adds the `roles-pruning` scope so access tokens can prune oversized role claims |
+| `introspection-endpoint-audience-check` | `off`, `warn`, `on` | no | Client-specific override for introspection audience validation mode |
 
 ### `context`
 
@@ -131,6 +137,19 @@ The introspection endpoint reconstructs the full role claims for introspection r
 
 The changelog does not clearly identify the first released version of roles pruning, so this documentation does not pin
 an introduction version.
+
+### Introspection endpoint audience check
+
+Use `mockserver.introspection-endpoint-audience-check` to control whether the introspection endpoint verifies that the
+introspecting client's `client_id` is present in the token `aud` claim.
+
+Modes:
+
+- `off` (default): no audience enforcement; introspection stays active
+- `warn`: validate and log a warning if `client_id` is missing from `aud`, but keep `active=true`
+- `on`: enforce validation; if `client_id` is missing from `aud` (or cannot be resolved), return `active=false`
+
+Set `oauth-mock-data.clients[].introspection-endpoint-audience-check` to override the server-wide mode for one client.
 
 ## `oauth-mock-data.users[]`
 
