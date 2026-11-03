@@ -70,7 +70,9 @@ public class CustomLoginDetails extends WebAuthenticationDetails {
         }
 
         this.bpRoles = bpRoles == null ? new ArrayList<>() : new ArrayList<>(asList(bpRoles));
-        this.bpRoles.addAll(asList(additionalBpRoles.split(LIST_TEXTFIELD_SEPARATOR)));
+        if (hasText(additionalBpRoles)) {
+            this.bpRoles.addAll(asList(additionalBpRoles.split(LIST_TEXTFIELD_SEPARATOR)));
+        }
     }
 
     public OAuthMockData.UserData toUserDataWithDefaults(OAuthMockData.UserData userDataDefaults) {

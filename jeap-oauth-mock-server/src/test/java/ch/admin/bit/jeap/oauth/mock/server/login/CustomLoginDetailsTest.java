@@ -46,4 +46,17 @@ class CustomLoginDetailsTest {
         assertEquals(asList("u1", "u2", "addn1", "addn2"), customLoginDetails.getUserRoles());
         assertEquals(asList("bp1", "bp2", "3:bp3", "4:bp4_1", "4:bp4_2"), customLoginDetails.getBpRoles());
     }
+
+    @Test
+    void fromRequestWithoutAdditionalBpRoles() {
+        // additionalbproles, unlike additionaluserroles, used to be split() without a hasText() check first,
+        // so a login form submitted without that field at all (not even empty) threw an NPE instead of
+        // logging in with just the checked bproles checkboxes.
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addParameter("bproles", "bp1", "bp2");
+
+        CustomLoginDetails customLoginDetails = CustomLoginDetails.fromRequest(request);
+
+        assertEquals(asList("bp1", "bp2"), customLoginDetails.getBpRoles());
+    }
 }
