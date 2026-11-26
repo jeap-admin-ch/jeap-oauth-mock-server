@@ -36,7 +36,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -55,7 +54,6 @@ import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2Au
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationContext;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationException;
-import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationProvider;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2AuthorizationCodeRequestAuthenticationToken;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -132,7 +130,7 @@ public class SecurityConfig {
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .authorizationEndpoint(authorizationEndpoint ->
                         authorizationEndpoint
-                                .authenticationProviders(configureAuthenticationValidator())
+                                .authorizationCodeRequestAuthenticationValidator(authorizationCodeRequestAuthenticationValidator())
                 )
                 .tokenIntrospectionEndpoint(tokenIntrospectionEndpoint ->
                         tokenIntrospectionEndpoint.authenticationProvider(new CustomTokenIntrospectionAuthenticationProvider(authorizationService(), jwtDecoder, oAuthMockData, mockServerConfig)
@@ -344,21 +342,13 @@ public class SecurityConfig {
     }
 
     /**
-     * Override default redirect_uri validator to allow for redirect URIs with "localhost" and override scope validation to allow dynamic scopes.
-     * See <a href="https://docs.spring.io/spring-authorization-server/docs/0.4.0/reference/html/protocol-endpoints.html#oauth2-authorization-endpoint">Docs</a>
+     * Override the default redirect_uri validator to allow for redirect URIs with "localhost" and the default scope
+     * validator to allow dynamic scopes. Set on the configurer, the validator applies both to the pre-validation filter
+     * in front of the authorization endpoint and to the authorization code request authentication provider.
      */
-    private Consumer<List<AuthenticationProvider>> configureAuthenticationValidator() {
-        return authenticationProviders ->
-                authenticationProviders.forEach(authenticationProvider -> {
-                    if (authenticationProvider instanceof OAuth2AuthorizationCodeRequestAuthenticationProvider oauthProvider) {
-                        Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> authenticationValidator =
-                                // Override default redirect_uri validator to allow for redirect URIs with "localhost"
-                                new CustomRedirectUriValidator()
-                                        // Override default scope validator to allow dynamic scopes
-                                        .andThen(SecurityConfig::validateScopeSupportingDynamicScopes);
-                        oauthProvider.setAuthenticationValidator(authenticationValidator);
-                    }
-                });
+    private static Consumer<OAuth2AuthorizationCodeRequestAuthenticationContext> authorizationCodeRequestAuthenticationValidator() {
+        return new CustomRedirectUriValidator()
+                .andThen(SecurityConfig::validateScopeSupportingDynamicScopes);
     }
 
     // Replacing the default scope validator from OAuth2AuthorizationCodeRequestAuthenticationValidator in order to

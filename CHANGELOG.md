@@ -7,6 +7,10 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [11.22.0] - 2026-11-26
 
+### Changed
+
+- Configure the redirect URI and scope validation on the authorization endpoint, as required by Spring Authorization Server 7.2
+
 ### Dependencies
 - **ch.admin.bit.jeap:jeap-spring-boot-parent**: 41.42.0 → 41.44.0 (minor)
 
